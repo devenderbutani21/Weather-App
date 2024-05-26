@@ -7,9 +7,21 @@ void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
+      ),
       routes: {
         "/": (context) => LoadingScreen(),
-        "/home": (context) => Home(),
+        "/home": (context) => HomeScreen(),
         "/loading": (context) => LoadingScreen(),
         "/location": (context) => ChooseLocation(),
       },
