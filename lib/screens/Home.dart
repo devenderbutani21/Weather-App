@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recase/recase.dart';
 import 'package:weatherapp/models/weather_model.dart';
 import 'package:weatherapp/services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,96 +45,162 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildWeatherInfo() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          weather!.cityName,
-          style: TextStyle(
-            fontSize: 32.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            height: 380,
+            width: 380,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(
+                24.0,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  weather!.cityName,
+                  style: const TextStyle(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Image.network(
+                  'http://openweathermap.org/img/wn/${weather!.icon}@2x.png',
+                  height: 100,
+                  width: 100,
+                ),
+                const SizedBox(height: 20.0),
+                Text(
+                  '${weather!.temperature.round()}°C',
+                  style: const TextStyle(
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(height: 10.0),
-        Image.network(
-          'http://openweathermap.org/img/wn/${weather!.icon}@2x.png',
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          weather!.description.titleCase,
-          style: TextStyle(
-            fontSize: 24.0,
-            color: Colors.white70,
+          const SizedBox(
+            height: 40,
           ),
-        ),
-        SizedBox(height: 20.0),
-        Text(
-          '${weather!.temperature}°C',
-          style: TextStyle(
-            fontSize: 48.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: weatherDetailColumn(
+                  'assets/images/thermometer.png',
+                  'Feels Like',
+                  '${weather!.feelsLike.round()}°C',
+                ),
+              ),
+              Expanded(
+                child: weatherDetailColumn(
+                  'assets/images/barometer.png',
+                  'Pressure',
+                  '${weather!.pressure} hPa',
+                ),
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
+          const SizedBox(height: 40.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
                 child: weatherDetailColumn(
-                    'Feels Like', '${weather!.feelsLike}°C')),
-            Expanded(
-                child:
-                    weatherDetailColumn('Min Temp', '${weather!.tempMin}°C')),
-            Expanded(
-                child:
-                    weatherDetailColumn('Max Temp', '${weather!.tempMax}°C')),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
+                  'assets/images/hygrometer.png',
+                  'Humidity',
+                  '${weather!.humidity}%',
+                ),
+              ),
+              Expanded(
                 child: weatherDetailColumn(
-                    'Pressure', '${weather!.pressure} hPa')),
-            Expanded(
-                child:
-                    weatherDetailColumn('Humidity', '${weather!.humidity}%')),
-            Expanded(
-                child: weatherDetailColumn(
-                    'Wind Speed', '${weather!.windSpeed} m/s')),
-            Expanded(
-                child: weatherDetailColumn(
-                    'Wind Direction', '${weather!.windDeg}°')),
-          ],
-        ),
-      ],
+                  'assets/images/wind_gauge.png',
+                  'Wind Speed',
+                  '${weather!.windSpeed.round()} m/s',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget weatherDetailColumn(String label, String value) {
+  Widget weatherDetailColumn(String location, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20.0,
-              color: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        height: 120,
+        width: 120,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(20.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 7,
+              offset: const Offset(0, 3), // changes position of shadow
             ),
-          ),
-          SizedBox(height: 5.0),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.white70,
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.asset(
+                  location,
+                  width: 28,
+                  height: 28,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 28.0,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -157,17 +222,17 @@ class _HomeScreenState extends State<HomeScreen> {
               hintText: 'City Name',
               hintStyle: TextStyle(
                 color: Colors.blue[300],
-              ), // Hint text color
+              ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue[300]!,
-                ),
+                borderSide: BorderSide(color: Colors.blue[300]!),
               ),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue[300]!,
-                ),
+                borderSide: BorderSide(color: Colors.blue[300]!),
               ),
+            ),
+            style: TextStyle(
+              color: Colors.blue[300], // Text color
+              fontWeight: FontWeight.bold, // Bold text
             ),
             cursorColor: Colors.blue[300], // Cursor color
           ),
@@ -209,24 +274,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue[300],
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue[200]!,
+              Colors.blue[600]!,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: weather == null
-              ? CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ? const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.white,
+                  ),
                 )
               : buildWeatherInfo(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showSearchDialog,
-        child: Icon(
+        child: const Icon(
           Icons.search_sharp,
-          color: Colors.white,
-          size: 32,
+          color: Colors.black,
+          size: 38,
         ),
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.lightBlueAccent,
       ),
     );
   }

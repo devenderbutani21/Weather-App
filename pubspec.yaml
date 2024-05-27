@@ -64,6 +64,10 @@ flutter:
   assets:
     - assets/images/weather_bg.jpg
     - assets/images/logo.png
+    - assets/images/barometer.png
+    - assets/images/hygrometer.png
+    - assets/images/thermometer.png
+    - assets/images/wind_gauge.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

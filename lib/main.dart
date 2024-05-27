@@ -19,9 +19,9 @@ void main() {
         ),
       ),
       routes: {
-        "/": (context) => LoadingScreen(),
-        "/home": (context) => HomeScreen(),
-        "/loading": (context) => LoadingScreen(),
+        "/": (context) => const LoadingScreen(),
+        "/home": (context) => const HomeScreen(),
+        "/loading": (context) => const LoadingScreen(),
       },
     ),
   );
