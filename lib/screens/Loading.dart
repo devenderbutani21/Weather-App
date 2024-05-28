@@ -14,24 +14,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   void startApp() async {
     try {
-      final weather = await apiService.fetchWeather(
-        'Toronto',
-      );
-      Navigator.pushReplacementNamed(
-        context,
-        '/home',
-        arguments: weather,
-      );
+      final weather = await apiService.fetchWeather('Toronto');
+      Navigator.pushReplacementNamed(context, '/home', arguments: weather);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            backgroundColor: Colors.white,
-            content: Text(
-              'Failed to load weather data: $e',
-              style: const TextStyle(
-                color: Colors.black87,
-              ),
-            )),
+          backgroundColor: Colors.red,
+          content: Text(
+            'Failed to load weather data: $e',
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
       );
     }
   }
@@ -65,30 +60,27 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 height: 240,
                 width: 240,
               ),
+              const SizedBox(height: 20),
               const Text(
                 "Weather App",
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               const Text(
                 "Made By Devender",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               const SpinKitThreeBounce(
-                color: Colors.white,
+                color: Colors.black,
                 size: 50.0,
               ),
             ],

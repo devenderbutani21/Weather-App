@@ -7,6 +7,10 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: Colors.blue[600],
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          secondary: Colors.lightBlueAccent,
+        ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
             color: Colors.white,
@@ -16,6 +20,10 @@ void main() {
           iconTheme: IconThemeData(
             color: Colors.white,
           ),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black87),
+          bodyMedium: TextStyle(color: Colors.black87),
         ),
       ),
       routes: {

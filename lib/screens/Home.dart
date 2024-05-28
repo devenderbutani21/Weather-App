@@ -55,9 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 380,
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(
-                24.0,
-              ),
+              borderRadius: BorderRadius.circular(24.0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
@@ -69,40 +67,64 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  weather!.cityName,
-                  style: const TextStyle(
-                    fontSize: 40.0,
+                const SizedBox(height: 20),
+                const Text(
+                  'My Location',
+                  style: TextStyle(
+                    fontSize: 30.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
+                const SizedBox(height: 10.0),
+                Text(
+                  weather!.cityName.toUpperCase(),
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
+                const SizedBox(height: 10.0),
                 Image.network(
                   'http://openweathermap.org/img/wn/${weather!.icon}@2x.png',
                   height: 100,
                   width: 100,
                 ),
-                const SizedBox(height: 20.0),
                 Text(
                   '${weather!.temperature.round()}°C',
                   style: const TextStyle(
-                    fontSize: 60.0,
+                    fontSize: 54,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'H:${weather!.tempMax.round()}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Text(
+                      'L:${weather!.tempMin.round()}',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-          const SizedBox(
-            height: 40,
-          ),
+          const SizedBox(height: 40.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -142,12 +164,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 50.0),
+          const Text(
+            "Made By Devender",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget weatherDetailColumn(String location, String label, String value) {
+  Widget weatherDetailColumn(String iconPath, String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
@@ -171,13 +202,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               children: [
                 Image.asset(
-                  location,
+                  iconPath,
                   width: 28,
                   height: 28,
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                const SizedBox(width: 10.0),
                 Text(
                   label,
                   style: const TextStyle(
@@ -188,9 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10.0),
             Text(
               value,
               style: const TextStyle(
@@ -209,62 +236,88 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text(
-            'Enter City Name',
-            style: TextStyle(
-              color: Colors.blue[300],
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
+            height: MediaQuery.of(context).size.height * 0.25, // 25% of screen height
+            decoration: BoxDecoration(
+              color: Colors.blue[100],
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Enter City Name',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextField(
+                    controller: _cityController,
+                    decoration: const InputDecoration(
+                      hintText: 'City Name',
+                      hintStyle: TextStyle(color: Colors.black54),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black87),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black87),
+                      ),
+                    ),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
+                    cursorColor: Colors.black,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (_cityController.text.isNotEmpty) {
+                            fetchWeatherData(_cityController.text);
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: const Text(
+                          'Search',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          content: TextField(
-            controller: _cityController,
-            decoration: InputDecoration(
-              hintText: 'City Name',
-              hintStyle: TextStyle(
-                color: Colors.blue[300],
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue[300]!),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.blue[300]!),
-              ),
-            ),
-            style: TextStyle(
-              color: Colors.blue[300], // Text color
-              fontWeight: FontWeight.bold, // Bold text
-            ),
-            cursorColor: Colors.blue[300], // Cursor color
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.blue[300],
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                if (_cityController.text.isNotEmpty) {
-                  fetchWeatherData(_cityController.text);
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text(
-                'Search',
-                style: TextStyle(
-                  color: Colors.blue[300],
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
         );
       },
     );
@@ -288,10 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Center(
           child: weather == null
               ? const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white,
-                  ),
-                )
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          )
               : buildWeatherInfo(),
         ),
       ),
@@ -303,6 +354,8 @@ class _HomeScreenState extends State<HomeScreen> {
           size: 38,
         ),
         backgroundColor: Colors.lightBlueAccent,
+        elevation: 16.0,
+        highlightElevation: 18.0,
       ),
     );
   }
